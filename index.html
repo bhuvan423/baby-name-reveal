@@ -2,24 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Production #1 Launch</title>
+  <title>Protected Baby Name Reveal</title>
   <style>
     body {
       background-color: #0b0c10;
-      color: #ffffff;
+      color: white;
       font-family: 'Segoe UI', sans-serif;
       text-align: center;
       padding-top: 100px;
     }
+    .hidden {
+      display: none;
+    }
+    input, button {
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+    }
     button {
-      padding: 15px 30px;
-      font-size: 20px;
       background-color: #28a745;
       color: white;
-      border: none;
-      border-radius: 10px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
     button:hover {
       background-color: #218838;
@@ -28,10 +33,32 @@
 </head>
 <body>
 
-  <h1>🎬 Bhuvanesh Kumar & Akila Present</h1>
-  <h2>Production #1</h2>
-  <p>Click OK to launch the big reveal!</p>
-  <button onclick="window.location.href='https://vimeo.com/1090625063/e44a917115'">OK</button>
+  <div id="password-section">
+    <h2>🔒 Enter Password to Launch</h2>
+    <input type="password" id="passwordInput" placeholder="Enter password" />
+    <br>
+    <button onclick="checkPassword()">Submit</button>
+    <p id="error" style="color: red;"></p>
+  </div>
+
+  <div id="content" class="hidden">
+    <h1>🎬 Bhuvanesh Kumar & Akila Present</h1>
+    <h2>Production #1</h2>
+    <p>Click OK to launch the big reveal!</p>
+    <button onclick="window.location.href='https://vimeo.com/1090625063/e44a917115'">OK</button>
+  </div>
+
+  <script>
+    function checkPassword() {
+      const password = document.getElementById("passwordInput").value;
+      if (password === "baby123") {
+        document.getElementById("password-section").style.display = "none";
+        document.getElementById("content").classList.remove("hidden");
+      } else {
+        document.getElementById("error").textContent = "Incorrect password. Try again.";
+      }
+    }
+  </script>
 
 </body>
 </html>
