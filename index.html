@@ -29,19 +29,25 @@
     button:hover {
       background-color: #218838;
     }
+    #error {
+      color: red;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
 
-  <div id="password-section">
+  <!-- Password Prompt -->
+  <div id="login">
     <h2>🔒 Enter Password to Launch</h2>
     <input type="password" id="passwordInput" placeholder="Enter password" />
     <br>
     <button onclick="checkPassword()">Submit</button>
-    <p id="error" style="color: red;"></p>
+    <div id="error"></div>
   </div>
 
-  <div id="content" class="hidden">
+  <!-- Hidden Content -->
+  <div id="mainContent" class="hidden">
     <h1>🎬 Bhuvanesh Kumar & Akila Present</h1>
     <h2>Production #1</h2>
     <p>Click OK to launch the big reveal!</p>
@@ -50,12 +56,14 @@
 
   <script>
     function checkPassword() {
-      const password = document.getElementById("passwordInput").value;
-      if (password === "baby123") {
-        document.getElementById("password-section").style.display = "none";
-        document.getElementById("content").classList.remove("hidden");
+      const input = document.getElementById("passwordInput").value;
+      const correct = "baby123"; // 🔒 Set your password here
+
+      if (input === correct) {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("mainContent").classList.remove("hidden");
       } else {
-        document.getElementById("error").textContent = "Incorrect password. Try again.";
+        document.getElementById("error").textContent = "❌ Incorrect password. Try again.";
       }
     }
   </script>
