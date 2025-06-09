@@ -35,11 +35,14 @@
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Password Prompt -->
+  <!-- Password Page -->
   <div id="login">
     <h2>🔒 Enter Password to Launch</h2>
     <input type="password" id="passwordInput" placeholder="Enter password" />
@@ -47,7 +50,7 @@
     <button onclick="checkPassword()">Submit</button>
     <div id="error"></div>
 
-    <!-- Autoplay Vimeo Video -->
+    <!-- Autoplay Video shown before password -->
     <iframe 
       src="https://player.vimeo.com/video/1091939580?h=870715d8c4&autoplay=1&muted=1&title=0&byline=0&portrait=0" 
       width="640" 
@@ -58,7 +61,7 @@
     </iframe>
   </div>
 
-  <!-- Hidden Content -->
+  <!-- Reveal Section after password -->
   <div id="mainContent" class="hidden">
     <h1>🎬 Bhuvanesh Kumar & Akila</h1>
     <h2>Production #1</h2>
@@ -69,7 +72,7 @@
   <script>
     function checkPassword() {
       const input = document.getElementById("passwordInput").value;
-      const correct = "GUESSME"; // Set your password here
+      const correct = "GUESSME"; // 🔑 Set your actual password here
 
       if (input === correct) {
         document.getElementById("login").style.display = "none";
