@@ -33,6 +33,21 @@
       color: red;
       margin-top: 10px;
     }
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+      margin-top: 30px;
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
   </style>
 </head>
 <body>
@@ -50,8 +65,16 @@
   <div id="mainContent" class="hidden">
     <h1>🎬 Bhuvanesh Kumar & Akila </h1>
     <h2>Production #1</h2>
-    <p>Click OK to launch the big reveal!</p>
-    <button onclick="window.location.href='https://vimeo.com/1091088538/f031979445'">OK</button>
+    <p>The big reveal is here!</p>
+
+    <!-- Embedded Vimeo Video -->
+    <div class="video-container">
+      <iframe src="https://player.vimeo.com/video/1091088538?h=f031979445"
+              frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen>
+      </iframe>
+    </div>
   </div>
 
   <script>
