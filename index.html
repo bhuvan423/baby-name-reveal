@@ -45,9 +45,9 @@
   <!-- Name Stage -->
   <div id="nameStage">
     <h2>🎉 Welcome! Please Enter Your Name</h2>
-    <input type="text" id="userName" placeholder="Enter your name" oninput="toggleNextButton()" />
+    <input type="text" id="userName" placeholder="Enter your name" />
     <br />
-    <button id="nextBtn" class="hidden" onclick="proceedToPassword()">Next</button>
+    <button id="nextBtn" onclick="proceedToPassword()" disabled>Next</button>
     <div id="nameError"></div>
   </div>
 
@@ -79,7 +79,37 @@
   </div>
 
   <script>
-    function toggleNextButton() {
+    // Enable "Next" button only when name is typed
+    document.getElementById("userName").addEventListener("input", function () {
+      const name = this.value.trim();
+      document.getElementById("nextBtn").disabled = name === "";
+    });
+
+    function proceedToPassword() {
       const name = document.getElementById("userName").value.trim();
-      const nextBtn = document.getElementById("nextBtn");
-      nextBtn.classList.toggle("hidden
+      if (name === "") {
+        document.getElementById("nameError").textContent = "⚠️ Please enter your name.";
+        return;
+      }
+      localStorage.setItem("guestName", name);
+      document.getElementById("nameStage").style.display = "none";
+      document.getElementById("passwordStage").classList.remove("hidden");
+    }
+
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value;
+      const correct = "GUESSME";
+      const name = localStorage.getItem("guestName");
+
+      if (input === correct) {
+        alert("Welcome, " + name + "! 🎉");
+        document.getElementById("passwordStage").style.display = "none";
+        document.getElementById("mainContent").classList.remove("hidden");
+      } else {
+        document.getElementById("error").textContent = "❌ Incorrect password. Try again.";
+      }
+    }
+  </script>
+
+</body>
+</html>
