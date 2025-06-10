@@ -4,12 +4,35 @@
   <meta charset="UTF-8" />
   <title>Protected Baby Name Reveal</title>
   <style>
-    body {
-      background-color: #0b0c10;
-      color: white;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
       font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+    body {
+      color: white;
       text-align: center;
-      padding-top: 50px;
+      position: relative;
+    }
+    /* Fullscreen background video iframe */
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+    }
+    /* Login container */
+    #login, #mainContent {
+      position: relative;
+      z-index: 1;
+      padding-top: 100px;
     }
     input, button {
       padding: 12px;
@@ -30,17 +53,21 @@
       color: red;
       margin-top: 10px;
     }
-    iframe {
-      margin-top: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-    }
     .hidden {
       display: none;
     }
   </style>
 </head>
 <body>
+
+  <!-- Fullscreen background video -->
+  <iframe 
+    id="bgVideo"
+    src="https://player.vimeo.com/video/1091946779?h=b73abcef48&autoplay=1&loop=1&muted=0&title=0&byline=0&portrait=0&background=1" 
+    frameborder="0" 
+    allow="autoplay; fullscreen" 
+    allowfullscreen>
+  </iframe>
 
   <!-- Password Page -->
   <div id="login">
@@ -49,19 +76,9 @@
     <br />
     <button onclick="checkPassword()">Submit</button>
     <div id="error"></div>
-
-    <!-- Autoplay, unmuted, looped video -->
-    <iframe 
-      src="https://player.vimeo.com/video/1091946779?h=b73abcef48&autoplay=1&loop=1&muted=0&title=0&byline=0&portrait=0" 
-      width="640" 
-      height="360" 
-      frameborder="0" 
-      allow="autoplay; fullscreen" 
-      allowfullscreen>
-    </iframe>
   </div>
 
-  <!-- Reveal Section after password -->
+  <!-- Reveal Section -->
   <div id="mainContent" class="hidden">
     <h1>🎬 Bhuvanesh Kumar & Akila</h1>
     <h2>Production #1</h2>
