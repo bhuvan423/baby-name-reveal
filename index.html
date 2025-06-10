@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Protected Baby Name Reveal</title>
+  <script src="https://player.vimeo.com/api/player.js"></script>
   <style>
     * {
       margin: 0;
@@ -13,14 +14,10 @@
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
-    }
-    body {
       color: white;
       text-align: center;
-      position: relative;
     }
-    /* Fullscreen background video iframe */
-    #bgVideo {
+    #bgVideoContainer {
       position: fixed;
       top: 0;
       left: 0;
@@ -28,7 +25,6 @@
       height: 100vh;
       z-index: -1;
     }
-    /* Login container */
     #login, #mainContent {
       position: relative;
       z-index: 1;
@@ -61,13 +57,7 @@
 <body>
 
   <!-- Fullscreen background video -->
-  <iframe 
-    id="bgVideo"
-    src="https://player.vimeo.com/video/1091946779?h=b73abcef48&autoplay=1&loop=1&muted=0&title=0&byline=0&portrait=0&background=1" 
-    frameborder="0" 
-    allow="autoplay; fullscreen" 
-    allowfullscreen>
-  </iframe>
+  <div id="bgVideoContainer"></div>
 
   <!-- Password Page -->
   <div id="login">
@@ -87,13 +77,30 @@
   </div>
 
   <script>
+    // Load muted video on page load
+    const options = {
+      id: 1091946779,
+      loop: true,
+      autoplay: true,
+      muted: true,
+      background: true
+    };
+
+    const player = new Vimeo.Player('bgVideoContainer', options);
+
     function checkPassword() {
       const input = document.getElementById("passwordInput").value;
-      const correct = "GUESSME"; // 🔑 Set your actual password here
+      const correct = "GUESSME"; // your password here
 
       if (input === correct) {
         document.getElementById("login").style.display = "none";
         document.getElementById("mainContent").classList.remove("hidden");
+
+        // Try to unmute (may be blocked by browser)
+        player.setVolume(1).catch(() => {
+          console.warn("Autoplay with sound may be blocked by browser.");
+        });
+
       } else {
         document.getElementById("error").textContent = "❌ Incorrect password. Try again.";
       }
