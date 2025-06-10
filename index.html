@@ -26,7 +26,7 @@
     button:hover {
       background-color: #218838;
     }
-    #error {
+    #error, #nameError {
       color: red;
       margin-top: 10px;
     }
@@ -42,8 +42,44 @@
 </head>
 <body>
 
-  <!-- Name Input Page -->
+  <!-- Name Stage -->
   <div id="nameStage">
     <h2>🎉 Welcome! Please Enter Your Name</h2>
-    <input type="text" id="userName" placeholder="Enter your name" />
-    <br
+    <input type="text" id="userName" placeholder="Enter your name" oninput="toggleNextButton()" />
+    <br />
+    <button id="nextBtn" class="hidden" onclick="proceedToPassword()">Next</button>
+    <div id="nameError"></div>
+  </div>
+
+  <!-- Password Stage -->
+  <div id="passwordStage" class="hidden">
+    <h2>🔒 Enter Password to Launch</h2>
+    <input type="password" id="passwordInput" placeholder="Enter password" />
+    <br />
+    <button onclick="checkPassword()">Submit</button>
+    <div id="error"></div>
+
+    <!-- Autoplay Video -->
+    <iframe 
+      src="https://player.vimeo.com/video/1091946779?h=b73abcef48&autoplay=1&loop=1&muted=0&title=0&byline=0&portrait=0" 
+      width="640" 
+      height="360" 
+      frameborder="0" 
+      allow="autoplay; fullscreen" 
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <!-- Reveal Section -->
+  <div id="mainContent" class="hidden">
+    <h1>🎬 Bhuvanesh Kumar & Akila</h1>
+    <h2>Production #1</h2>
+    <p>Click OK to launch the big reveal!</p>
+    <button onclick="window.location.href='https://vimeo.com/1091088538/f031979445'">OK</button>
+  </div>
+
+  <script>
+    function toggleNextButton() {
+      const name = document.getElementById("userName").value.trim();
+      const nextBtn = document.getElementById("nextBtn");
+      nextBtn.classList.toggle("hidden
