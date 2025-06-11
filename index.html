@@ -47,7 +47,7 @@
     <h2>🎉 Welcome to Bhuvanesh & Akila's Baby Naming Ceremony 🎉<br><br><br>Please Enter Your Name</h2>
     <input type="text" id="userName" placeholder="Enter your name" />
     <br />
-    <button id="nextBtn" disabled>Next</button>
+    <button id="nextBtn" disabled onclick="proceedToPassword()">Next</button>
     <div id="nameError"></div>
   </div>
 
@@ -58,58 +58,7 @@
     <br />
     <button onclick="checkPassword()">Submit</button>
     <div id="error"></div>
+
+    <!-- Autoplay Video -->
     <iframe 
-      src="https://player.vimeo.com/video/1091946779?h=b73abcef48&autoplay=1&loop=1&muted=0&title=0&byline=0&portrait=0" 
-      width="640" 
-      height="360" 
-      frameborder="0" 
-      allow="autoplay; fullscreen" 
-      allowfullscreen>
-    </iframe>
-  </div>
-
-  <!-- Reveal Section -->
-  <div id="mainContent" class="hidden">
-    <h1>🎬 Bhuvanesh Kumar & Akila</h1>
-    <h2>Production #1</h2>
-    <p>Click OK to launch the big reveal!</p>
-    <button onclick="window.location.href='https://vimeo.com/1091088538/f031979445'">OK</button>
-  </div>
-
-  <!-- Firebase SDK (Compat for GitHub Pages) -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
-  <script>
-    // Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyCV14L7jtHt-2aqnR2jlNhK9uw6j338dHk",
-      authDomain: "baby-name-reveal.firebaseapp.com",
-      databaseURL: "https://baby-name-reveal-default-rtdb.firebaseio.com",
-      projectId: "baby-name-reveal",
-      storageBucket: "baby-name-reveal.appspot.com",
-      messagingSenderId: "107356853293",
-      appId: "1:107356853293:web:bb5d0f4af16ccf661554a4",
-      measurementId: "G-YB0K2E26WC"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    function logToFirebase(name, status) {
-      const timestamp = new Date().toISOString();
-      const newRef = db.ref("guests").push();
-      newRef.set({
-        name: name,
-        status: status,
-        time: timestamp
-      }).catch((error) => {
-        console.error("Firebase error:", error);
-      });
-    }
-
-    function proceedToPassword() {
-      const name = document.getElementById("userName").value.trim();
-      if (name === "") {
-        document.getElementById("nameError").textContent = "⚠️ Please
+      src="https://player.vimeo.com/video/1091946779?h=b73abcef48&autoplay=1&loop=1&muted=0&title=
