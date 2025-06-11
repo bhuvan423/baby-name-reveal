@@ -1,8 +1,9 @@
-<!-- Firebase App (the core Firebase SDK) -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-  import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+<!-- Firebase SDKs (UMD version for use in browser directly) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
+<script>
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyCV14L7jtHt-2aqnR2jlNhK9uw6j338dHk",
     authDomain: "baby-name-reveal.firebaseapp.com",
@@ -15,22 +16,22 @@
   };
 
   // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
-  window.logToFirebase = function (name, status) {
+  function logToFirebase(name, status) {
     const timestamp = new Date().toISOString();
-    const newLogRef = push(ref(db, "guests"));
-    set(newLogRef, {
+    const newRef = db.ref("guests").push();
+    newRef.set({
       name: name,
       status: status,
       time: timestamp
     }).catch((error) => {
-      console.error("❌ Firebase write error:", error);
+      console.error("Firebase error:", error);
     });
-  };
+  }
 
-  window.proceedToPassword = function () {
+  function proceedToPassword() {
     const name = document.getElementById("userName").value.trim();
     if (name === "") {
       document.getElementById("nameError").textContent = "⚠️ Please enter your name.";
@@ -40,9 +41,9 @@
     logToFirebase(name, "Name Entered");
     document.getElementById("nameStage").style.display = "none";
     document.getElementById("passwordStage").classList.remove("hidden");
-  };
+  }
 
-  window.checkPassword = function () {
+  function checkPassword() {
     const input = document.getElementById("passwordInput").value;
     const correct = "GUESSME";
     const name = localStorage.getItem("guestName") || "Unknown";
@@ -56,9 +57,9 @@
       logToFirebase(name, "Wrong Password");
       document.getElementById("error").textContent = "❌ Incorrect password. Try again.";
     }
-  };
+  }
 
-  // Enable/Disable next button on name input
+  // Enable/disable next button
   document.addEventListener("DOMContentLoaded", () => {
     const userNameInput = document.getElementById("userName");
     const nextBtn = document.getElementById("nextBtn");
@@ -67,4 +68,8 @@
       nextBtn.disabled = userNameInput.value.trim() === "";
     });
   });
+
+  // Expose to window for button onclick
+  window.proceedToPassword = proceedToPassword;
+  window.checkPassword = checkPassword;
 </script>
