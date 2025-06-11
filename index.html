@@ -1,124 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Protected Baby Name Reveal</title>
-  <style>
-    body {
-      background-color: #0b0c10;
-      color: white;
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding-top: 50px;
-    }
-    input, button {
-      padding: 12px;
-      margin-top: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-    }
-    button {
-      background-color: #28a745;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #218838;
-    }
-    #error, #nameError {
-      color: red;
-      margin-top: 10px;
-    }
-    iframe {
-      margin-top: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-    }
-    .hidden {
-      display: none;
-    }
-  </style>
-</head>
-<body>
+<!-- Firebase App (the core Firebase SDK) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+  import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
-  <!-- Name Stage -->
-  <div id="nameStage">
-    <h2>🎉 Welcome to Bhuvanesh & Akila's Baby Naming Ceremony 🎉<br><br><br>Please Enter Your Name</h2>
-    <input type="text" id="userName" placeholder="Enter your name" />
-    <br />
-    <button id="nextBtn" onclick="proceedToPassword()" disabled>Next</button>
-    <div id="nameError"></div>
-  </div>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCV14L7jtHt-2aqnR2jlNhK9uw6j338dHk",
+    authDomain: "baby-name-reveal.firebaseapp.com",
+    databaseURL: "https://baby-name-reveal-default-rtdb.firebaseio.com",
+    projectId: "baby-name-reveal",
+    storageBucket: "baby-name-reveal.firebasestorage.app",
+    messagingSenderId: "107356853293",
+    appId: "1:107356853293:web:bb5d0f4af16ccf661554a4",
+    measurementId: "G-YB0K2E26WC"
+  };
 
-  <!-- Password Stage -->
-  <div id="passwordStage" class="hidden">
-    <h2>🔒 Enter Password to Launch</h2>
-    <input type="password" id="passwordInput" placeholder="Enter password" />
-    <br />
-    <button onclick="checkPassword()">Submit</button>
-    <div id="error"></div>
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-    <!-- Autoplay Video -->
-    <iframe 
-      src="https://player.vimeo.com/video/1091946779?h=b73abcef48&autoplay=1&loop=1&muted=0&title=0&byline=0&portrait=0" 
-      width="640" 
-      height="360" 
-      frameborder="0" 
-      allow="autoplay; fullscreen" 
-      allowfullscreen>
-    </iframe>
-  </div>
-
-  <!-- Reveal Section -->
-  <div id="mainContent" class="hidden">
-    <h1>🎬 Bhuvanesh Kumar & Akila</h1>
-    <h2>Production #1</h2>
-    <p>Click OK to launch the big reveal!</p>
-    <button onclick="window.location.href='https://vimeo.com/1091088538/f031979445'">OK</button>
-  </div>
-
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwgx3M8mTfgkEXWIcHaEKICkeVlUO4NjCo-mg-Njp8kdockxds6ZnqDLkPNva8QqdI2/exec";
-
-    document.getElementById("userName").addEventListener("input", function () {
-      const name = this.value.trim();
-      document.getElementById("nextBtn").disabled = name === "";
+  window.logToFirebase = function (name, status) {
+    const timestamp = new Date().toISOString();
+    const newLogRef = push(ref(db, "guests"));
+    set(newLogRef, {
+      name: name,
+      status: status,
+      time: timestamp
+    }).catch((error) => {
+      console.error("❌ Firebase write error:", error);
     });
+  };
 
-    function logToSheet(name, status) {
-      const url = `${scriptURL}?name=${encodeURIComponent(name)}&status=${encodeURIComponent(status)}`;
-      fetch(url).catch(err => console.error("❌ Logging error:", err));
+  window.proceedToPassword = function () {
+    const name = document.getElementById("userName").value.trim();
+    if (name === "") {
+      document.getElementById("nameError").textContent = "⚠️ Please enter your name.";
+      return;
     }
+    localStorage.setItem("guestName", name);
+    logToFirebase(name, "Name Entered");
+    document.getElementById("nameStage").style.display = "none";
+    document.getElementById("passwordStage").classList.remove("hidden");
+  };
 
-    function proceedToPassword() {
-      const name = document.getElementById("userName").value.trim();
-      if (name === "") {
-        document.getElementById("nameError").textContent = "⚠️ Please enter your name.";
-        return;
-      }
-      localStorage.setItem("guestName", name);
-      logToSheet(name, "Name Entered");
-      document.getElementById("nameStage").style.display = "none";
-      document.getElementById("passwordStage").classList.remove("hidden");
+  window.checkPassword = function () {
+    const input = document.getElementById("passwordInput").value;
+    const correct = "GUESSME";
+    const name = localStorage.getItem("guestName") || "Unknown";
+
+    if (input === correct) {
+      logToFirebase(name, "Access Granted");
+      alert("Welcome, " + name + "! 🎉");
+      document.getElementById("passwordStage").style.display = "none";
+      document.getElementById("mainContent").classList.remove("hidden");
+    } else {
+      logToFirebase(name, "Wrong Password");
+      document.getElementById("error").textContent = "❌ Incorrect password. Try again.";
     }
+  };
 
-    function checkPassword() {
-      const input = document.getElementById("passwordInput").value;
-      const correct = "GUESSME";
-      const name = localStorage.getItem("guestName") || "Unknown";
+  // Enable/Disable next button on name input
+  document.addEventListener("DOMContentLoaded", () => {
+    const userNameInput = document.getElementById("userName");
+    const nextBtn = document.getElementById("nextBtn");
 
-      if (input === correct) {
-        logToSheet(name, "Access Granted");
-        alert("Welcome, " + name + "! 🎉");
-        document.getElementById("passwordStage").style.display = "none";
-        document.getElementById("mainContent").classList.remove("hidden");
-      } else {
-        logToSheet(name, "Wrong Password");
-        document.getElementById("error").textContent = "❌ Incorrect password. Try again.";
-      }
-    }
-  </script>
-
-</body>
-</html>
+    userNameInput.addEventListener("input", () => {
+      nextBtn.disabled = userNameInput.value.trim() === "";
+    });
+  });
+</script>
