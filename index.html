@@ -100,7 +100,14 @@
 
     function logToFirebase(name, status) {
       const timestamp = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-      const newRef = db.ref("guests").push();
+
+      // Sanitize name to be used as Firebase key
+      const safeName = name.replace(/[^a-zA-Z0-9]/g, "_");
+
+      // Use timestamp suffix to avoid overwriting logs
+      const entryKey = `${safeName}_${Date.now()}`;
+
+      const newRef = db.ref("guests/" + entryKey);
       newRef.set({
         name: name,
         status: status,
