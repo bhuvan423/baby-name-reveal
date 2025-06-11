@@ -129,7 +129,6 @@
 
       if (input === correct) {
         logToFirebase(name, "Access Granted");
-        alert("Welcome, " + name + "! 🎉");
         document.getElementById("passwordStage").style.display = "none";
         document.getElementById("mainContent").classList.remove("hidden");
       } else {
