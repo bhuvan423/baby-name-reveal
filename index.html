@@ -99,7 +99,7 @@
     const db = firebase.database();
 
     function logToFirebase(name, status) {
-      const timestamp = new Date().toISOString();
+      const timestamp = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
       const newRef = db.ref("guests").push();
       newRef.set({
         name: name,
